@@ -4,6 +4,7 @@ require('./config/sync_config/config');
 const models = require('./models');
 require('./global_functions');
 const userController = require('./controllers/UsersController');
+const todoCotroller = require('./controllers/ToDosController');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const JwtStrategy = require('passport-jwt').Strategy;
@@ -19,7 +20,7 @@ opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
 opts.secretOrKey = CONFIG.jwt_encryption;
 
 passport.use(
-  new JwtStrategy(opts, async function(jwt_payload, done) {
+  new JwtStrategy(opts, async function (jwt_payload, done) {
     let err, user;
     [err, user] = await to(Users.findByPk(jwt_payload.user_id));
 
@@ -32,7 +33,7 @@ passport.use(
   }),
 );
 // CORS
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   // Website you wish to allow to connect
   res.setHeader('Access-Control-Allow-Origin', '*');
   // Request methods you wish to allow
@@ -76,4 +77,8 @@ app.put(
   userController.update,
 );
 app.post('/login', userController.login);
+app.post('/todos', passport.authenticate('jwt', { session: false }), todoCotroller.create);
+app.put('/todos', passport.authenticate('jwt', { session: false }), todoCotroller.update);
+app.get('/todos', passport.authenticate('jwt', { session: false }), todoCotroller.getAll);
+app.get('/todos/:todoId', passport.authenticate('jwt', { session: false }), todoCotroller.get);
 module.exports = app;

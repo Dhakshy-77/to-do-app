@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
 
   }, {});
   Todos.associate = function (models) {
-    models.ToDos.belongsTo(models.Users, {
+    models.Todos.belongsTo(models.Users, {
       foreignKey: 'userId',
       sourceKey: 'id',
     });
