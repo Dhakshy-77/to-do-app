@@ -35,4 +35,16 @@ export class AuthService {
     logout(): void {
         this.token.next(null);
     }
+
+    signup(firstName: string, lastName: string,
+        email: string, password: string): Observable<any> {
+        const data = {
+            first: firstName,
+            last: lastName,
+            email: email,
+            password: password,
+            userRoleId: 2,
+        };
+        return this.http.post<any>('http://localhost:3000/users', data);
+    }
 }

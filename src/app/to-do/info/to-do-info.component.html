@@ -1,0 +1,11 @@
+<h2>Todo Info:</h2>
+<form [formGroup]="toDoForm">
+  <div class="row">
+    <div class="col-md-6"><label>ToDo</label>
+      <input type="text" class="form-control" formControlName="name" /></div>
+  </div><br />
+  <div class="row">
+    <div class="col-md-6"><button class="btn btn-primary" [disabled]="!toDoForm.valid" (click)="save()"
+        type="submit">Save</button></div>
+  </div>
+</form>
