@@ -1,0 +1,21 @@
+<h2>ToDo List</h2>
+<div class="row" [formGroup]="searchForm">
+  <div class="col-md-8">
+    <label>Search:</label>
+    <input
+      class="form-control"
+      formControlName="query"
+      placeholder="Enter text to search..."
+    />
+  </div>
+</div>
+<br />
+<div class="list-group">
+  <a
+    *ngFor="let todo of todos"
+    class="list-group-item list-group-item-action"
+    routerLink="/todo/{{ todo.id }}"
+  >
+    {{ todo.name }}
+  </a>
+</div>

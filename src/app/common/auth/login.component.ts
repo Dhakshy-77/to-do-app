@@ -3,34 +3,27 @@ import { Router } from '@angular/router';
 import { AuthService } from './auth.service';
 
 @Component({
-    templateUrl: './login.component.html',
+  templateUrl: './login.component.html',
 })
 export class LoginComponent implements OnInit {
+  email = 'ccamac@4miles.com';
+  password = 'password';
 
-    email = '';
-    password = '';
+  constructor(private router: Router, private authService: AuthService) {}
 
-    constructor(
-        private router: Router,
-        private authService: AuthService,
-    ) { }
+  ngOnInit() {}
 
-    ngOnInit() {
-    }
-
-    login(): void {
-        this.authService.login(this.email, this.password)
-            .subscribe(
-                (response) => {
-                    if (response.success) {
-                        console.log('successful login');
-                        this.router.navigateByUrl('/home');
-                    }
-                },
-                (error) => {
-                    console.log('username/password incorrect');
-                }
-            );
-    }
-
+  login(): void {
+    this.authService.login(this.email, this.password).subscribe(
+      (response) => {
+        if (response.success) {
+          console.log('successful login');
+          this.router.navigateByUrl('/home');
+        }
+      },
+      (error) => {
+        console.log('username/password incorrect');
+      },
+    );
+  }
 }

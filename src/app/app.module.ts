@@ -15,10 +15,17 @@ import { LoginComponent } from './common/auth/login.component';
 import { TokenInterceptor } from './common/auth/token.interceptor';
 import { SignUpComponent } from './common/auth/sign-up.component';
 import { ToDoInfoComponent } from './to-do/info/to-do-info.component';
-
+import { ToDoListComponent } from './to-do/list/to-do-list.component';
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, LoginComponent, SignUpComponent, ToDoInfoComponent],
+  declarations: [
+    AppComponent,
+    HomeComponent,
+    LoginComponent,
+    SignUpComponent,
+    ToDoInfoComponent,
+    ToDoListComponent,
+  ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -35,4 +42,4 @@ import { ToDoInfoComponent } from './to-do/info/to-do-info.component';
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
