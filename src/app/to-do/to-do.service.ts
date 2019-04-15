@@ -21,7 +21,13 @@ export class TodoService {
     }
   }
 
-  get(text: string): Observable<IToDo[]> {
-    return this.http.get<IToDo[]>(`http://localhost:3000/todos?name=${text}`);
+  get(text: string, isAdmin: boolean): Observable<IToDo[]> {
+    if (isAdmin) {
+      return this.http.get<IToDo[]>(
+        `http://localhost:3000/todos/admin?name=${text}`,
+      );
+    } else {
+      return this.http.get<IToDo[]>(`http://localhost:3000/todos?name=${text}`);
+    }
   }
 }

@@ -17,5 +17,8 @@
     routerLink="/todo/{{ todo.id }}"
   >
     {{ todo.name }}
+    <span *ngIf="isAdmin" class="float-right">{{
+      todo.User.first + ' ' + todo.User.last
+    }}</span>
   </a>
 </div>

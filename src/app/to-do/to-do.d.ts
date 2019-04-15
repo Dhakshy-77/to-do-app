@@ -1,3 +1,5 @@
+import { IUser } from '../common/auth/auth.service';
+
 export interface IToDo {
   id: number;
   name: string;
@@ -5,4 +7,5 @@ export interface IToDo {
   dateCompleted: Date;
   userId: number;
   orderId: number;
+  User?: IUser;
 }

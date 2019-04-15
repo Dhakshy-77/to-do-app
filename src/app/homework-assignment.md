@@ -2,6 +2,7 @@ Updates to Users
 
 - Add isTrainer to the User model
 - Update the AuthService so you can determine if the current user is a Trainer
+- (stretch) - add isTrainer question to signup
 
 Create Sessions
 
@@ -17,7 +18,7 @@ Create Sessions
   - Add
     - Only Trainers can add sessions. Be sure to use a guard
     - current user is assumed as Trainer
-    - EventId should be handled via select and option html elements (aka standard html dropdown)
+    - (try it) EventId should be handled via select and option html elements (aka standard html dropdown)
   - Info
     - Only the Trainer that made this Session can edit it. All other users coming to this page should have the form disabled and the save button removed.
   - List

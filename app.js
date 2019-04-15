@@ -20,7 +20,7 @@ opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
 opts.secretOrKey = CONFIG.jwt_encryption;
 
 passport.use(
-  new JwtStrategy(opts, async function (jwt_payload, done) {
+  new JwtStrategy(opts, async function(jwt_payload, done) {
     let err, user;
     [err, user] = await to(Users.findByPk(jwt_payload.user_id));
 
@@ -33,7 +33,7 @@ passport.use(
   }),
 );
 // CORS
-app.use(function (req, res, next) {
+app.use(function(req, res, next) {
   // Website you wish to allow to connect
   res.setHeader('Access-Control-Allow-Origin', '*');
   // Request methods you wish to allow
@@ -70,6 +70,11 @@ if (CONFIG.app === 'dev') {
   models.sequelize.sync();
 }
 
+app.get(
+  '/users',
+  passport.authenticate('jwt', { session: false }),
+  userController.getAll,
+);
 app.post('/users', userController.create);
 app.put(
   '/users',
@@ -77,8 +82,29 @@ app.put(
   userController.update,
 );
 app.post('/login', userController.login);
-app.post('/todos', passport.authenticate('jwt', { session: false }), todoCotroller.create);
-app.put('/todos', passport.authenticate('jwt', { session: false }), todoCotroller.update);
-app.get('/todos', passport.authenticate('jwt', { session: false }), todoCotroller.getAll);
-app.get('/todos/:todoId', passport.authenticate('jwt', { session: false }), todoCotroller.get);
+app.post(
+  '/todos',
+  passport.authenticate('jwt', { session: false }),
+  todoCotroller.create,
+);
+app.put(
+  '/todos',
+  passport.authenticate('jwt', { session: false }),
+  todoCotroller.update,
+);
+app.get(
+  '/todos',
+  passport.authenticate('jwt', { session: false }),
+  todoCotroller.getAll,
+);
+app.get(
+  '/todos/admin',
+  passport.authenticate('jwt', { session: false }),
+  todoCotroller.getAllAdmin,
+);
+app.get(
+  '/todos/:todoId',
+  passport.authenticate('jwt', { session: false }),
+  todoCotroller.get,
+);
 module.exports = app;
