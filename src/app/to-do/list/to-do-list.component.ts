@@ -5,9 +5,15 @@ import { FormGroup, FormControl } from '@angular/forms';
 
 import { debounceTime } from 'rxjs/operators';
 import { AuthService } from '../../common/auth/auth.service';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-to-do-list',
+  styles: [`
+  .list-group-item.list-group-item-action.todo-done {
+      text-decoration: line-through;
+  }
+`],
   templateUrl: './to-do-list.component.html',
 })
 export class ToDoListComponent implements OnInit {
@@ -17,7 +23,9 @@ export class ToDoListComponent implements OnInit {
   constructor(
     private toDoService: TodoService,
     private authService: AuthService,
-  ) {}
+    private router: Router,
+    private route: ActivatedRoute,
+  ) { }
 
   todos: IToDo[];
   query = '';
@@ -44,4 +52,20 @@ export class ToDoListComponent implements OnInit {
       this.todos = todos;
     });
   }
+
+  goToToDo(todo: IToDo): void {
+    this.router.navigate([`./${todo.id}`], { relativeTo: this.route });
+  }
+
+  markDone(todo: IToDo, event: Event): void {
+    event.stopPropagation();
+    this.toDoService.markDone(todo.id).subscribe((answer) => {
+      Object.assign(todo, answer);
+    },
+      (error) => {
+        console.log('mark done failed');
+      },
+    );
+  }
+
 }

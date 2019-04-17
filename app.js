@@ -20,7 +20,7 @@ opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
 opts.secretOrKey = CONFIG.jwt_encryption;
 
 passport.use(
-  new JwtStrategy(opts, async function(jwt_payload, done) {
+  new JwtStrategy(opts, async function (jwt_payload, done) {
     let err, user;
     [err, user] = await to(Users.findByPk(jwt_payload.user_id));
 
@@ -33,7 +33,7 @@ passport.use(
   }),
 );
 // CORS
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   // Website you wish to allow to connect
   res.setHeader('Access-Control-Allow-Origin', '*');
   // Request methods you wish to allow
@@ -107,4 +107,5 @@ app.get(
   passport.authenticate('jwt', { session: false }),
   todoCotroller.get,
 );
+app.put('/todos/markDone/:todoId', passport.authenticate('jwt', { session: false }), todoCotroller.markDone);
 module.exports = app;

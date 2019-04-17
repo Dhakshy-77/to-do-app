@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class TodoService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getById(id: number): Observable<IToDo> {
     return this.http.get<IToDo>(`http://localhost:3000/todos/${id}`);
@@ -30,4 +30,10 @@ export class TodoService {
       return this.http.get<IToDo[]>(`http://localhost:3000/todos?name=${text}`);
     }
   }
+
+  markDone(id: number): Observable<IToDo> {
+    return this.http
+      .put<IToDo>(`http://localhost:3000/todos/markDone/${id}`, null);
+  }
+
 }

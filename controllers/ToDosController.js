@@ -1,7 +1,7 @@
 const Todos = require('../models').Todos;
 const Users = require('../models').Users;
 
-const getAll = async function(req, res) {
+const getAll = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   let err, todos;
   let whereStatement = {};
@@ -26,7 +26,7 @@ const getAll = async function(req, res) {
 };
 module.exports.getAll = getAll;
 
-const getAllAdmin = async function(req, res) {
+const getAllAdmin = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   let err, todos;
   if (req.user.userRoleId !== 1) {
@@ -56,7 +56,7 @@ const getAllAdmin = async function(req, res) {
 };
 module.exports.getAllAdmin = getAllAdmin;
 
-const get = async function(req, res) {
+const get = async function (req, res) {
   let err, todo;
   let todoId = parseInt(req.params.todoId);
   res.setHeader('Content-Type', 'application/json');
@@ -69,7 +69,7 @@ const get = async function(req, res) {
 };
 module.exports.get = get;
 
-const create = async function(req, res) {
+const create = async function (req, res) {
   res.setHeader('ContentType', 'application/json');
   const body = req.body;
 
@@ -91,7 +91,7 @@ const create = async function(req, res) {
 };
 module.exports.create = create;
 
-const update = async function(req, res) {
+const update = async function (req, res) {
   let err, toDo;
   toDo = req.body;
   [err, toDo] = await to(
@@ -114,3 +114,33 @@ const update = async function(req, res) {
   return res.json(toDo);
 };
 module.exports.update = update;
+
+
+const markDone = async function (req, res) {
+  let err, todoId;
+
+  todoId = req.params.todoId;
+  console.log(todoId);
+  [err, todo] = await to(
+    Todos.update(
+      { isCompleted: true, dateCompleted: new Date() },
+      {
+        where: {
+          id: todoId,
+        },
+      },
+    ),
+  );
+  if (err) {
+    if (typeof err == 'object' && typeof err.message != 'undefined') {
+      err = err.message;
+    }
+
+    if (typeof code !== 'undefined') res.statusCode = code;
+    res.statusCode = 422;
+    return res.json({ success: false, error: err });
+  }
+  [err, returnTodo] = await to(Todos.findByPk(todoId));
+  return res.json(returnTodo);
+};
+module.exports.markDone = markDone;

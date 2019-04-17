@@ -2,23 +2,21 @@
 <div class="row" [formGroup]="searchForm">
   <div class="col-md-8">
     <label>Search:</label>
-    <input
-      class="form-control"
-      formControlName="query"
-      placeholder="Enter text to search..."
-    />
+    <input class="form-control" formControlName="query" placeholder="Enter text to search..." />
   </div>
 </div>
 <br />
 <div class="list-group">
-  <a
-    *ngFor="let todo of todos"
-    class="list-group-item list-group-item-action"
-    routerLink="/todo/{{ todo.id }}"
-  >
+  <a *ngFor="let todo of todos" class="list-group-item list-group-item-action float-right" (click)="goToToDo(todo)"
+    [class.todo-done]="todo.isCompleted">
     {{ todo.name }}
     <span *ngIf="isAdmin" class="float-right">{{
       todo.User.first + ' ' + todo.User.last
     }}</span>
+    <button [style.visibility]="todo.isCompleted ? 'hidden' : null" class="btn btn-outline-secondary btn-sm float-right"
+      (click)="markDone(todo, $event)" type="button">
+      mark Done
+    </button>
   </a>
+
 </div>
