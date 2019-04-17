@@ -29,7 +29,7 @@ export class AuthService {
   token: BehaviorSubject<string> = new BehaviorSubject<string>(null);
   isAdmin: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   isAuthenticated(): boolean {
     return this.token.getValue() ? true : false;
@@ -65,6 +65,10 @@ export class AuthService {
   logout(): void {
     this.token.next(null);
     this.isAdmin.next(false);
+  }
+
+  getAll(): Observable<any> {
+    return this.http.get('http://localhost:3000/users');
   }
 
   signup(
