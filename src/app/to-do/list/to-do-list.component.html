@@ -1,8 +1,12 @@
 <h2>ToDo List</h2>
 <div class="row" [formGroup]="searchForm">
-  <div class="col-md-8">
+  <div class="col-md-6">
     <label>Search:</label>
     <input class="form-control" formControlName="query" placeholder="Enter text to search..." />
+  </div>
+  <div class="col-md-2">
+    <label>Phone:</label>
+    <input class="form-control" formControlName="phone" placeholder="Enter phone to search..." />
   </div>
 </div>
 <br />

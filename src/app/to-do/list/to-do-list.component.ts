@@ -17,7 +17,7 @@ import { Router, ActivatedRoute } from '@angular/router';
   templateUrl: './to-do-list.component.html',
 })
 export class ToDoListComponent implements OnInit {
-  searchForm = new FormGroup({ query: new FormControl('') });
+  searchForm = new FormGroup({ query: new FormControl(''), phone: new FormControl('') });
   isAdmin = false;
 
   constructor(
@@ -29,6 +29,7 @@ export class ToDoListComponent implements OnInit {
 
   todos: IToDo[];
   query = '';
+  phone = '';
 
   ngOnInit() {
     this.isAdmin = this.authService.isAdmin.getValue();
@@ -41,13 +42,21 @@ export class ToDoListComponent implements OnInit {
         this.query = value;
         this.getToDos();
       });
+    this.searchForm
+      .get('phone')
+      .valueChanges.pipe(debounceTime(350))
+      .subscribe((value) => {
+        console.log(value);
+        this.phone = value;
+        this.getToDos();
+      });
   }
 
   getToDos() {
     // have 2 different service endpoints
     // OR
     // or have the service determine what to do
-    this.toDoService.get(this.query, this.isAdmin).subscribe((todos) => {
+    this.toDoService.get(this.query, this.isAdmin, this.phone).subscribe((todos) => {
       console.log(todos);
       this.todos = todos;
     });

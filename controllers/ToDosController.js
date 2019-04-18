@@ -34,6 +34,7 @@ const getAllAdmin = async function (req, res) {
     return res.json({ success: false, error: 'Unauthorized' });
   }
   let whereStatement = {};
+  let userWhereStatement = {};
   if (req.query.name) {
     whereStatement.name = {
       $like: '%' + req.query.name + '%',
@@ -44,9 +45,15 @@ const getAllAdmin = async function (req, res) {
       $eq: req.query.isCompleted === 'true',
     };
   }
+
+  if (req.query.phone) {
+    userWhereStatement.phone = {
+      $like: '%' + req.query.phone + '%',
+    };
+  }
   [err, todos] = await to(
     Todos.findAll({
-      include: [{ model: Users }],
+      include: [{ model: Users, where: userWhereStatement }],
       where: whereStatement,
       order: [['orderId', 'ASC']],
     }),

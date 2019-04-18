@@ -6,12 +6,12 @@ import { AuthService } from './auth.service';
   templateUrl: './login.component.html',
 })
 export class LoginComponent implements OnInit {
-  email = 'ccamac@4miles.com';
-  password = 'password';
+  email = 'jgraham@4miles.com';
+  password = '1234';
 
-  constructor(private router: Router, private authService: AuthService) {}
+  constructor(private router: Router, private authService: AuthService) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   login(): void {
     this.authService.login(this.email, this.password).subscribe(
