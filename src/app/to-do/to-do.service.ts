@@ -21,10 +21,10 @@ export class TodoService {
     }
   }
 
-  get(text: string, isAdmin: boolean, phone: string): Observable<IToDo[]> {
+  get(text: string, isAdmin: boolean, phone: string, userId: number): Observable<IToDo[]> {
     if (isAdmin) {
       return this.http.get<IToDo[]>(
-        `http://localhost:3000/todos/admin?name=${text}&phone=${phone}`,
+        `http://localhost:3000/todos/admin?name=${text}&phone=${phone}&userId=${userId > 0 ? userId : ''}`,
       );
     } else {
       return this.http.get<IToDo[]>(`http://localhost:3000/todos?name=${text}`);

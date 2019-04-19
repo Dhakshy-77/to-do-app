@@ -67,8 +67,8 @@ export class AuthService {
     this.isAdmin.next(false);
   }
 
-  getAll(): Observable<any> {
-    return this.http.get('http://localhost:3000/users');
+  getAll(): Observable<IUser[]> {
+    return this.http.get<IUser[]>('http://localhost:3000/users');
   }
 
   signup(

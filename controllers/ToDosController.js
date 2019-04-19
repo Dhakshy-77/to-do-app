@@ -51,6 +51,12 @@ const getAllAdmin = async function (req, res) {
       $like: '%' + req.query.phone + '%',
     };
   }
+
+  if (req.query.userId) {
+    userWhereStatement.id = {
+      $eq: req.query.userId,
+    };
+  }
   [err, todos] = await to(
     Todos.findAll({
       include: [{ model: Users, where: userWhereStatement }],

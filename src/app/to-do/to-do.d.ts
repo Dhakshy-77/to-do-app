@@ -8,4 +8,5 @@ export interface IToDo {
   userId: number;
   orderId: number;
   User?: IUser;
+  createdAt: Date;
 }

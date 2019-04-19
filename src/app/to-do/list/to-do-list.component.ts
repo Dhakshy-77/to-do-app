@@ -4,7 +4,7 @@ import { IToDo } from '../to-do';
 import { FormGroup, FormControl } from '@angular/forms';
 
 import { debounceTime } from 'rxjs/operators';
-import { AuthService } from '../../common/auth/auth.service';
+import { AuthService, IUser } from '../../common/auth/auth.service';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -17,7 +17,7 @@ import { Router, ActivatedRoute } from '@angular/router';
   templateUrl: './to-do-list.component.html',
 })
 export class ToDoListComponent implements OnInit {
-  searchForm = new FormGroup({ query: new FormControl(''), phone: new FormControl('') });
+  searchForm = new FormGroup({ query: new FormControl(''), phone: new FormControl(''), user: new FormControl('') });
   isAdmin = false;
 
   constructor(
@@ -28,10 +28,15 @@ export class ToDoListComponent implements OnInit {
   ) { }
 
   todos: IToDo[];
+  users: IUser[];
   query = '';
   phone = '';
+  user: IUser;
 
   ngOnInit() {
+    this.authService.getAll().subscribe((response) => {
+      this.users = response;
+    });
     this.isAdmin = this.authService.isAdmin.getValue();
     this.getToDos();
     this.searchForm
@@ -50,13 +55,21 @@ export class ToDoListComponent implements OnInit {
         this.phone = value;
         this.getToDos();
       });
+    this.searchForm
+      .get('user')
+      .valueChanges
+      .subscribe((value) => {
+        console.log(value);
+        this.user = value;
+        this.getToDos();
+      });
   }
 
   getToDos() {
     // have 2 different service endpoints
     // OR
     // or have the service determine what to do
-    this.toDoService.get(this.query, this.isAdmin, this.phone).subscribe((todos) => {
+    this.toDoService.get(this.query, this.isAdmin, this.phone, this.user ? this.user.id : 0).subscribe((todos) => {
       console.log(todos);
       this.todos = todos;
     });
